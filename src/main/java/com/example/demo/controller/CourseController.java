@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/courses")
+@RestController
 public class CourseController {
     private final CourseService courseService;
 
@@ -16,6 +17,6 @@ public class CourseController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public void save (@RequestBody CourseRequest courseRequest) {
-
+        this.courseService.create(courseRequest.toEntity());
     }
 }

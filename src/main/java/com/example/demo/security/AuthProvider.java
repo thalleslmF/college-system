@@ -34,9 +34,7 @@ public class AuthProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         User user;
         String username = authentication.getName();
-        System.out.println(username);
         String password = (String) authentication.getCredentials();
-        System.out.println(password);
         var optUser = this.userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
             throw new BadCredentialsException("username or password is invalid");

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -37,10 +38,10 @@ public class AuthorizationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         var httpResponse = (HttpServletResponse) response;
-        if(isAuthenticationRequired()) {
-            System.out.println(isAuthenticationRequired());
+        var httpRequest = (HttpServletRequest) request;
+        if (isAuthenticationRequired(httpRequest)) {
             String authorization = ((HttpServletRequest) request).getHeader("Authorization");
-                if(authorization != null) {
+                if (authorization != null) {
                     var jwtToken = authorization.split(" ")[1].trim();
                     SecretKey key = Keys.hmacShaKeyFor(
                             SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
@@ -61,7 +62,10 @@ public class AuthorizationFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    private boolean isAuthenticationRequired() {
+    private boolean isAuthenticationRequired(HttpServletRequest request) {
+        if (Arrays.asList(SecurityConstants.UNPROTECTED_URIS).contains(request.getRequestURI())) {
+            return false;
+        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (authentication == null) || !authentication.isAuthenticated();
     }

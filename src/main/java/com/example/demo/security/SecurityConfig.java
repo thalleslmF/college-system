@@ -22,7 +22,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(authorizationFilter, BasicAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/login", "/user").permitAll() // login
+                .antMatchers("/login", "/users").permitAll() // login
                 .anyRequest().fullyAuthenticated()
                 .and().exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

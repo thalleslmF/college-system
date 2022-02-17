@@ -9,11 +9,22 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class Subject {
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     private Long id;
 
     private String name;
     @OneToOne
     private Teacher teacher;
+    @ManyToOne
+    @JoinColumn(name="semester_id")
+    private Semester semester;
+
+    public Subject(String name, Teacher teacher) {
+        this.name = name;
+        this.teacher = teacher;
+    }
+
+    public Subject() {
+    }
 }
