@@ -1,11 +1,15 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Course;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.SemesterRepository;
 import com.example.demo.service.CourseService;
 import com.example.demo.service.SemesterService;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class CourseServiceImpl implements CourseService {
@@ -30,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course findById(String id) {
-        return null;
+    public Course findById(long id) {
+        return this.courseRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("Failed to find course id:  %d", id)));
     }
 }

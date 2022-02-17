@@ -17,7 +17,7 @@ public class SemesterRequest {
 
     public Semester toEntity() {
         var semester = new Semester(this.subjects.stream().map(it -> it.toEntity(null)).collect(Collectors.toList()), this.number);
-       semester.getSubjects().forEach(it -> it.setSemester(semester));
-       return semester;
+        semester.getSubjects().forEach(it -> it.setSemester(semester));
+        return semester;
     }
 }
